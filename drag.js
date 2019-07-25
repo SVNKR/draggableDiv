@@ -12,8 +12,17 @@ function dragElement(elmnt) {
     e = e || window.event;
     e.preventDefault();
     // get the mouse cursor position at startup:
-    startX = e.clientX;
-    startY = e.clientY;
+	var rotation = parseInt(document.getElementById('rotationSelect').value);
+	if(rotation === 0 || rotation === 180) {
+		startX = e.clientX;
+		startY = e.clientY;
+	}
+	else {
+		startX = e.clientX;
+		startY = e.clientY;
+		console.log("start:" + startX + " " + startY);
+	}
+    
     document.onmouseup = closeDragElement;
     // call a function whenever the cursor moves:
     document.onmousemove = elementDrag;
@@ -22,18 +31,45 @@ function dragElement(elmnt) {
   function elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
+	document.getElementById('test1').innerHTML= e.clientX + "," + e.clientY;
 	//set the boundaries of draggability(all values are relative to parent container)
 	maxLeft = 0;
 	maxRight = elmnt.parentNode.clientWidth - elmnt.offsetWidth;
 	maxTop = 0;
 	maxBottom = elmnt.parentNode.clientHeight - elmnt.offsetHeight;
 	
+	var rotation = 0, rotationOffset = 1;
+	rotation = parseInt(document.getElementById('rotationSelect').value);
+	if(rotation === 0) {
+		diffMX = (e.clientX - startX);
+		diffMY = (e.clientY - startY);
+		startX = e.clientX;
+		startY = e.clientY;
+	}
+	else if(rotation === 90) {
+		rotationOffset = -1;
+		diffMX = (e.clientY - startY);
+		diffMY = rotationOffset * (e.clientX - startX);
+		console.log(diffMX + " " + diffMY);
+		startX = e.clientX;
+		startY = e.clientY;
+	}	
+	else if(rotation === 180) {
+		rotationOffset = -1;
+		diffMX = rotationOffset * (e.clientX - startX);
+		diffMY = rotationOffset * (e.clientY - startY);
+		startX = e.clientX;
+		startY = e.clientY;
+	}
+	else if(rotation === 270) {
+		rotationOffset = -1;
+		diffMX = rotationOffset * (e.clientY - startY);
+		diffMY = (e.clientX - startX);
+		startX = e.clientX;
+		startY = e.clientY;
+	}
     // calculate the new cursor position:
-    diffMX = e.clientX - startX;
-    diffMY = e.clientY - startY;
-	console.log(e.clientX + "-" + startX + " " + e.clientY + "-" + startY);
-    startX = e.clientX;
-    startY = e.clientY;
+    
 	
 	//check boundaries
 	diffX = (elmnt.offsetLeft + diffMX);
@@ -47,7 +83,7 @@ function dragElement(elmnt) {
     // set the element's new position:
     elmnt.style.top = diffY/elmnt.parentNode.clientHeight * 100 + "%";
     elmnt.style.left = diffX/elmnt.parentNode.clientWidth * 100 + "%";
-	console.log(diffX);
+	console.log(diffX); 
   }
 
   function closeDragElement(e) {
