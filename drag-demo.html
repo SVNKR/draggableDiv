@@ -1,95 +1,43 @@
-<!DOCTYPE html>
 <html>
-<style>
-#mydiv {
-  position: relative;
-  z-index: 15;
-  background-color: #2196F3;
-  color: #fff;
-  cursor: move;
-  text-align: center;
-  border: 1px solid #d3d3d3;
-  width: 100px;
+	<head>
+	<script type = "text/javascript" src = "drag.js" ></script>
+		<style>
+		#mydiv {
+		  position: absolute;
+		  z-index: 15;
+		  background-color: #2196F3;
+		  color: #fff;
+		  cursor: move;
+		  text-align: center;
+		  border: 1px solid #d3d3d3;
+		  width: 200px;
+		  height: 50px
 
-}
+		}
 
-#parentDiv {
-position: relative;
-	border: 1px solid #000000;
-	height: 500px;
-	width: 800px;
-	top: 100px;
-	left: 200px;
-}
-</style>
-<body>
+		#parentDiv {
+		position: absolute;
+			border: 1px solid #000000;
+			height: 500px;
+			width: 800px;
+			top: 100px;
+			left: 200px;
+		}
+		</style>
+		
+	</head>
+	
+	<body onload="dragElement()">
 
-<h1>Draggable DIV Element</h1>
+	<h1>Draggable DIV Element</h1>
 
-<p>Click and hold the mouse button down while moving the DIV element</p>
-<div id="parentDiv">
-	<div id="mydiv">	  
-	  <p>Move</p>
-	  <p>this</p>
-	  <p>DIV</p>
+	<p>Click and hold the mouse button down while moving the DIV element</p>
+	<div id="parentDiv">
+		<div id="mydiv">	  
+		  <img id="image1" src="./transform.png" style="position: absolute; height:100%; width:100%; top:0%; left: 0%;">
+		</img>
+		</div>
 	</div>
-</div>
 
-<script>
-//Make the DIV element draggagle:
-dragElement(document.getElementById("mydiv"));
-
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, diffX = 0, diffY = 0, maxLeft = 0, maxRight = 0, maxTop = 0, maxBottom = 0;
-  elmnt.onmousedown = dragMouseDown;
-
-
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-	//set the boundaries of draggability(all values are relative to parent container)
-	maxLeft = 0;
-	maxRight = elmnt.parentNode.clientWidth - elmnt.offsetWidth;
-	maxTop = 0;
-	maxBottom = elmnt.parentNode.clientHeight - elmnt.offsetHeight;
-	
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-	
-	//check boundaries
-	diffX = (elmnt.offsetLeft - pos1);
-	diffY = (elmnt.offsetTop - pos2)
-	diffX = diffX < maxLeft ? maxLeft : diffX;
-	diffX = diffX > maxRight ? maxRight : diffX;
-	diffY = diffY < maxTop ? maxTop : diffY;
-	diffY = diffY > maxBottom ? maxBottom : diffY;
-	
-    // set the element's new position:
-    elmnt.style.top = diffY + "px";
-    elmnt.style.left = diffX + "px";
-  }
-
-  function closeDragElement() {
-    /* stop moving when mouse button is released:*/
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-</script>
-
-</body>
+	</body>
 </html>
